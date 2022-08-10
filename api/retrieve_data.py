@@ -19,16 +19,13 @@ def get_user():
 
 @app.route('/search_user', methods=['GET'])
 def search_user():
-    # keyword = request.form['keyword']
-    #
-    # query_body = {
-    #     "query": {
-    #         "match": {
-    #             "name": keyword
-    #         }
-    #     }
-    # }
-
-    res = es.search(index="product", body={"match_all": {}})
-
+    keyword = request.args['keyword']
+    query_body = {
+        "query": {
+            "match_all": {
+                "_name": keyword
+            }
+        }
+    }
+    res = es.search(index="product", body=query_body)
     return jsonify(res['hits']['hits'])
